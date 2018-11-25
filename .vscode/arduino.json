@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:micro",
+    "sketch": "sketch/volctl.ino",
+    "port": "/dev/ttyACM0"
+}
