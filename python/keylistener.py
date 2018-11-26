@@ -1,3 +1,5 @@
+#! /usr/bin/python2
+
 from pynput import keyboard
 import subprocess
 import re
@@ -18,6 +20,14 @@ def on_press(key):
     if (key == keyboard.Key.f17):
         for m in getMusicSinkInput():
             subprocess.run("pactl set-sink-input-volume {} -3%".format(m), shell=True)
+
+    # main Vol
+    if (key == keyboard.Key.f20):
+        subprocess.run("pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle", shell=True)
+    if (key == keyboard.Key.f18):
+        subprocess.run("pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +3%", shell=True)
+    if (key == keyboard.Key.f19):
+        subprocess.run("pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -3%", shell=True)
 
 def getMusicSinkInput():
     pattern = re.compile(r'Sink Input #(\d+).*application\.name = "([a-zA-Z]+)"')

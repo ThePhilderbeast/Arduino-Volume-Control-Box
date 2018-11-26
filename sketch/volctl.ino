@@ -46,12 +46,6 @@ void setup() {
     pinMode(button3, INPUT_PULLUP);
 
     Keyboard.begin();
-
-    //set the vol to 0
-    for(int i = 50; i > 0; i--){
-        Keyboard.write(MEDIA_VOLUME_DOWN);
-        delay(1);
-    }
 }
 
 void loop() {
@@ -63,15 +57,15 @@ void loop() {
         b1LastPush = currentMillis + pressDelay;
         // turn LED on:
         led1state = !led1state;
-        // digitalWrite(led1, led1state);
-        Keyboard.write(MEDIA_VOLUME_MUTE);
+        digitalWrite(led1, led1state);
+        Keyboard.write(KEY_F20);
     } 
 
     if (!digitalRead(button2) && b2LastPush < currentMillis) {
         b2LastPush = currentMillis + pressDelay;
         // turn LED on:
         led2state = !led2state;
-        // digitalWrite(led2, led2state);
+        digitalWrite(led2, led2state);
         Keyboard.write(MEDIA_PLAY_PAUSE);
     } 
 
@@ -79,7 +73,7 @@ void loop() {
         b3LastPush = currentMillis + pressDelay;
         // turn LED on:
         led3state = !led3state;
-        // digitalWrite(led3, led3state);
+        digitalWrite(led3, led3state);
         Keyboard.write(KEY_F13);
     } 
 }
@@ -88,7 +82,7 @@ void doVolume() {
 
     //Master Vol
     int vol = analogRead(fader1Pin);
-    int newvolpercent = ((float)vol / 1024.0) * 100;
+    int newvolpercent = ((float)vol / 1024.0) * 150;
     // Serial.println(newvolpercent);
     if (vol1percent != newvolpercent)
     {
@@ -97,7 +91,7 @@ void doVolume() {
         {
             while (vol1 < vol1percent)
             {
-                Keyboard.write(MEDIA_VOLUME_UP);
+                Keyboard.write(KEY_F18);
                 vol1 += 3;
                 delay(1);
             }
@@ -105,7 +99,7 @@ void doVolume() {
         {
             while (vol1 > vol1percent)
             {
-                Keyboard.write(MEDIA_VOLUME_DOWN);
+                Keyboard.write(KEY_F19);
                 vol1 -= 3;
                 delay(1);
             }
