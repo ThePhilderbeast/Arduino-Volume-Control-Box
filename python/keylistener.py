@@ -1,6 +1,12 @@
+#! /usr/bin/python2
+
 from pynput import keyboard
 import subprocess
 import re
+
+musicApps = ["Spotify"]
+pattern = re.compile(r'(?!Sink Input #.*?module-loopback)Sink Input #(\d+).*?application\.name = "([a-zA-Z]+)"')
+
 
 def on_press(key):
     # mic vol up and down
@@ -19,15 +25,24 @@ def on_press(key):
         for m in getMusicSinkInput():
             subprocess.run("pactl set-sink-input-volume {} -3%".format(m), shell=True)
 
+    # main Vol
+    if (key == keyboard.Key.f20):
+        subprocess.run("pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle", shell=True)
+    if (key == keyboard.Key.f18):
+        subprocess.run("pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +3%", shell=True)
+    if (key == keyboard.Key.f19):
+        subprocess.run("pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -3%", shell=True)
+
 def getMusicSinkInput():
-    pattern = re.compile(r'Sink Input #(\d+).*application\.name = "([a-zA-Z]+)"')
     process = subprocess.run("pactl list sink-inputs", shell=True, stdout=subprocess.PIPE)
     stdout = "{}".format(process.stdout)
     stdout = stdout.replace(r"\n", "")
     apps = re.findall(pattern, stdout)
     matches = []
     for m in apps:
-        matches.append(m[0])
+        # print("index: {} app:{}".format(m[0], m[1]))
+        if (m[1] in musicApps):
+            matches.append(m[0])
     return matches
 
 def on_release(key):
