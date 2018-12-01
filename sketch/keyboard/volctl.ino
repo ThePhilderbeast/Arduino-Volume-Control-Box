@@ -1,13 +1,10 @@
 #include <HID-Project.h>
 #include <HID-Settings.h>
 
+// pins
 int fader1Pin = A2;
 int fader2Pin = A1;
 int fader3Pin = A0;
-
-int fader1Value = 0;
-int fader2Value = 0;
-int fader3Value = 0;
 
 int led1 = 2;      // select the pin for the LED
 int led2 = 4;      // select the pin for the LED
@@ -17,20 +14,21 @@ int button1 = 3;
 int button2 = 5;
 int button3 = 7;
 
-bool led1state = LOW;
-bool led2state = LOW;
-bool led3state = LOW;
-
+//last press times
 unsigned long b1LastPush = 0;
 unsigned long b2LastPush = 0;
 unsigned long b3LastPush = 0;
 
+//delay time
 int pressDelay = 250;
 
+//current states
+bool led1state = LOW;
+bool led2state = LOW;
+bool led3state = LOW;
 int vol1 = 0;
 int vol2 = 0;
 int vol3 = 0;
-
 int vol1percent = 0;
 int vol2percent = 0;
 int vol3percent = 0;
